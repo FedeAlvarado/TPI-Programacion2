@@ -28,3 +28,8 @@ while True:
     if opt == "4":
         print("Saludos!.")
         break
+
+fede = Usuario()
+
+
+print(fede)

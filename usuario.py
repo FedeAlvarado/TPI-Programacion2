@@ -1,9 +1,11 @@
-class Usuario():
-    def __init__(self,name,surname,email,password) -> None:
-        self.__name = name
-        self.__surname = surname
-        self.__email = email
-        self.__password = password
+from abc import ABC
+
+class Usuario(ABC):
+    def __init__(self) -> None:
+        self.__name = None
+        self.__surname = None
+        self.__email = None
+        self.__password = None
 
     @property
     def password(self):
@@ -14,7 +16,7 @@ class Usuario():
         return self.__name
     
     @property
-    def apellido(self):
+    def surname(self):
         return self.__surname
     
     @property
@@ -29,17 +31,15 @@ class Usuario():
     def name(self, new_name):
         self.__name = new_name
 
-    @apellido.setter
+    @surname.setter
     def surname(self, surname):
         self.__surname= surname
-
-    @email.setter
-    def email(self, email):
-        self.__email = email
 
     def validar_credenciales(self, email:str, password: str) -> bool:
         return self.__email == email and self.__password == password
     
     def __str__(self) -> str:
-        pass
+        return f'Email: {self.email} Contraseña: {self.password}'
+    
+
     
