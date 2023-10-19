@@ -1,11 +1,11 @@
 from abc import ABC
 
 class Usuario(ABC):
-    def __init__(self) -> None:
-        self.__name = None
-        self.__surname = None
-        self.__email = None
-        self.__password = None
+    def __init__(self, nombre, apellido, email, password):
+        self.__name = nombre
+        self.__surname = apellido
+        self.__email = email
+        self.__password = password
 
     @property
     def password(self):

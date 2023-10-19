@@ -1,9 +1,10 @@
-from curso import *
+from usuario import Usuario
+from curso import Curso
+class Profesor(Usuario):
+    def __init__(self, nombre, apellido, email, password, materia):
+        super().__init__(nombre, apellido, email, password)
+        self.__materia = materia
 
-class Profesor():
-    def __init__(self, titulo: str, anio_ingreso:int) -> None:
-        self.__titulo  = titulo
-        self.__anio_ingreso = anio_ingreso
     
     @property
     def titulo(self) -> str:
