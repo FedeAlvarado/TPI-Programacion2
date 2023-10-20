@@ -7,7 +7,7 @@ class Estudiante(Usuario):
         super().__init__(nombre, apellido, email, password)
         self.__legajo = legajo
         self.__date_ins = date_ins
-        self.mi_cursos = []  
+        self.__mis_cursos = []  
 
     @property
     def legajo(self) -> str:
@@ -15,7 +15,13 @@ class Estudiante(Usuario):
     @property
     def date_ins(self) -> int:
         return self.__date_ins
-    
+    @property
+    def matricular_curso(self):
+        return self.__mis_cursos
+    @matricular_curso.setter
+    def matricular_curso(self, curso: object):
+        self.__mis_cursos = curso
+
     @legajo.setter
     def legajo(self, legajo: int):
         self.__legajo = legajo
@@ -28,5 +34,5 @@ class Estudiante(Usuario):
         return f'Legajo: {self.legajo} Fecha de Inscripción: {self.date_ins}'
 
     def matriculacion(self, curso:Curso):
-        pass
+        self.matricular_curso.append(curso)
     
