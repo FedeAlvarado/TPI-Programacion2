@@ -7,7 +7,7 @@ class Estudiante(Usuario):
         super().__init__(nombre, apellido, email, password)
         self.__legajo = legajo
         self.__date_ins = date_ins
-
+        self.mi_cursos = []  
 
     @property
     def legajo(self) -> str:

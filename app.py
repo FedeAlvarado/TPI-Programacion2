@@ -2,7 +2,6 @@ from usuario import Usuario
 from estudiante import Estudiante
 from curso import Curso
 from profesor import Profesor
-from curso import obtener_cursos_ordenados
 
 alumnos = []
 profesores = []
@@ -10,7 +9,13 @@ profesores = []
 alumno1 = Estudiante("nombre1", "apellido1", "email1", "123", "12345", "2023-10-18")
 alumno2 = Estudiante("nombre2", "apellido2", "email2", "123", "12345", "2023-10-18")
 profesor1 = Profesor("nombre_profesor1", "apellido_profesor1", "email", "123", "Matemáticas")
-
+cursos = [
+    Curso("Programación I", "Tecnicatura Universitaria en Programación"),
+    Curso("Programación II", "Tecnicatura Universitaria en Programación"),
+    Curso("Laboratorio II", "Tecnicatura Universitaria en Programación"),
+    Curso("InglesI", "Tecnicatura Universitaria en Programación"),
+    Curso("InglesII", "Tecnicatura Universitaria en Programación")
+]
 alumnos.append(alumno1)
 alumnos.append(alumno2)
 profesores.append(profesor1)
@@ -31,6 +36,9 @@ def menu_alumno():
     print("2 - Ver curso")
     print("3 - Volver al menú principal")
 
+def obtener_cursos_ordenados():
+    return cursos_ordenados
+
 while True:
     menu_principal()
     opt = input("Ingrese una opción: ")
@@ -49,14 +57,41 @@ while True:
                 menu_alumno()
                 opt_alumno = input("Ingrese una opción de estudiante: ")
 
+                cursos_ordenados = sorted(cursos, key=lambda x: x.nombre)
+
                 if opt_alumno == "1":
-                    #  matricularse en un curso
-                    pass
+                    print("Cursos disponibles:")
+                    for i, curso in enumerate(cursos_ordenados, start=1):
+                        print(f"{i}. {curso.nombre}")
+                    curso_seleccionado = None
+                    while curso_seleccionado is None:
+                        try:
+                            opcion = int(input("Seleccione el número del curso: "))
+                            if 1 <= opcion <= len(cursos_ordenados):
+                                curso_seleccionado = cursos_ordenados[opcion - 1]
+
+                                if curso_seleccionado not in alumno_encontrado.mi_cursos:  # Verificar si ya está matriculado
+                                    password_matriculacion = input(f"Ingrese la contraseña de matriculación para '{curso_seleccionado.nombre}': ")
+                                    if password_matriculacion == curso_seleccionado.password:
+                                        alumno_encontrado.mi_cursos.append(curso_seleccionado)  # Agregar el curso a mi_cursos
+                                        print(f"Te has matriculado en el curso {curso_seleccionado.nombre}.")
+                                    else:
+                                        print("Contraseña de matriculación incorrecta. Intente de nuevo.")
+                                else:
+                                    print("Ya estás matriculado en este curso.")
+                            else:
+                                print("Opción no válida. Intente de nuevo.")
+                        except ValueError:
+                            print("Ingrese un número válido.")
+
                 elif opt_alumno == "2":
-                    # ver cursos
-                    pass
+                    if isinstance(alumno_encontrado, Estudiante):
+                     print("Cursos disponibles para matricularse:")
+                    cursos_ordenados = sorted(cursos, key=lambda x: x.nombre)
+                    for i, curso in enumerate(cursos_ordenados, start=1):
+                        print(f"{i} {curso.nombre}")
                 elif opt_alumno == "3":
-                    break  # volver al menú principal
+                     break  # volver al menú principal
 
         else:
             print("Error: Correo electrónico o contraseña incorrectos.")

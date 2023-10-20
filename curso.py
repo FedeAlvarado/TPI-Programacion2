@@ -1,15 +1,15 @@
 import random
 import string
 
-class Curso:
-    def __init__(self, materia, carrera):
-        self.materia = materia
+class Curso():
+    def __init__(self, nombre, carrera):
+        self.nombre = nombre
         self.carrera = carrera
         self.__password_matriculacion = self.generar_password()
 
     @property
-    def materia(self) -> str:
-        return self.__materia
+    def nombre(self) -> str:
+        return self.__nombre
 
     @property
     def carrera(self) -> str:
@@ -19,34 +19,23 @@ class Curso:
     def password(self) -> str:
         return self.__password_matriculacion
 
-    @materia.setter
-    def materia(self, materia: str):
-        self.__materia = materia
+    @nombre.setter
+    def nombre(self, nombre_mat: str):
+        self.__nombre = nombre_mat
 
     @carrera.setter
     def carrera(self, carrera: str):
         self.__carrera = carrera
 
     def __str__(self) -> str:
-        return f'Materia: {self.materia} Carrera: {self.carrera}'
+        return f"Curso: {self.__nombre} - Carrera: {self.__carrera}"
 
     @classmethod
     def generar_password(cls):
+        # Genera una contraseña aleatoria
         caracteres = string.ascii_letters + string.digits
         return ''.join(random.choice(caracteres) for _ in range(8))
-    
-cursos = [
-        Curso("InglesI", "Tecnicatura Universitaria en Programación"),
-        Curso("InglesII", "Tecnicatura Universitaria en Programación"),
-        Curso("Laboratorio I", "Tecnicatura Universitaria en Programación"),
-        Curso("Laboratorio II", "Tecnicatura Universitaria en Programación"),
-        Curso("Programación I", "Tecnicatura Universitaria en Programación"),
-        Curso("Programación II", "Tecnicatura Universitaria en Programación")
-        ]
 
-# Ordenar la lista de cursos alfabéticamente por materia
-cursos_ordenados = sorted(cursos, key=lambda curso: curso.materia)
 
-def obtener_cursos_ordenados():
-    return cursos_ordenados
+
 
