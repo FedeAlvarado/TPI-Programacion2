@@ -1,5 +1,6 @@
 from usuario import Usuario
 from curso import Curso
+
 class Profesor(Usuario):
     def __init__(self, nombre:str, apellido:str, email:str, password:str, titulo:str, anio:str):
         super().__init__(nombre, apellido, email, password)
