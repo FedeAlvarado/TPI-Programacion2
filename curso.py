@@ -4,8 +4,11 @@ import string
 class Curso():
     def __init__(self, nombre: str):
         self.__nombre = nombre
-        self.carrera =  "Tecnicatura Universitaria en Programacion"
+        self.carrera = "Tecnicatura Universitaria en Programacion"
         self.__password_matriculacion = self.__generar_password()
+        self.prox_cod = 0
+        self.contrasenia_matriculacion = ""
+        self.archivos = []
 
     @property
     def nombre(self) -> str:
@@ -19,15 +22,17 @@ class Curso():
     def nombre(self, nombre_mat: str):
         self.__nombre = nombre_mat
 
+    def nuevo_archivo(self, archivo):
+        pass
 
     def __str__(self) -> str:
-        return f"Curso: {self.__nombre} - Carrera: {self.carrera} - Clave de Matriculacion: {self.password}"
+        return f"Curso: {self.__nombre} - Carrera: {self.carrera} - Clave de Matriculación: {self.password}"
 
     @classmethod
     def __generar_password(cls):
-        # Genera una contraseña aleatoria
         caracteres = string.ascii_letters + string.digits
         return ''.join(random.choice(caracteres) for _ in range(8))
+
 
 
 

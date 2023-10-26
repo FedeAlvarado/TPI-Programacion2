@@ -3,7 +3,8 @@ from estudiante import Estudiante
 from curso import Curso
 from profesor import Profesor
 import os
-
+from archivo import Archivo
+from datetime import date
 
 alumnos = [] #LISTAS A UTILIZAR
 profesores = [] #LISTAS A UTILIZAR
@@ -23,12 +24,21 @@ cursos = [
     Curso("Estadistica"),
 ] #LISTAS A UTILIZAR
 
+
+archivo1 = Archivo("tpi.pdf", date(2023, 10, 15), "PDF", cursos[0])
+archivo2 = Archivo("practica1.pdf", date(2023, 10, 20), "PDF", cursos[0])
+
+archivo3 = Archivo("tpii.pdf", date(2023, 10, 16), "PDF", cursos[1])
+archivo4 = Archivo("practica2.pdf", date(2023, 10, 21), "PDF", cursos[1])
+
+cursos[0].archivos = [archivo1, archivo2]
+cursos[1].archivos = [archivo3, archivo4]
+
 alumnos.append(alumno1)
 alumnos.append(alumno2)
 profesores.append(profesor1)
 
 def menu_principal():
-    #os.system('cls')
     print("|--------------------------------------|")
     print("|BIENVENIDO AL CAMPUS VIRTUAL DE LA UTN|")
     print("|--------------------------------------|")    
@@ -44,16 +54,16 @@ def menu_profesor():
 
 def menu_alumno():
     print("1 - Matricularse a un curso")
-    print("2 - Ver curso")
-    print("3 - Volver al menú principal")
+    print("2 - Desmatricularse de un curso")
+    print("3 - Ver cursos matriculados")
+    print("4 - Volver al menú principal")
 
 def obtener_cursos_ordenados():
-    return cursos_ordenados
+    return sorted(cursos, key=lambda x: x.nombre)
 
 while True:
     menu_principal()
     opt = input("Ingrese una opción: ")
-    #os.system('cls')
 
     if opt == "1":
         print("|--------------------------------------|")
@@ -63,14 +73,14 @@ while True:
         password = input("Ingrese su contraseña: ")
         alumno_encontrado = None
         for alumno in alumnos:
-            if isinstance(alumno, Estudiante) and alumno.validar_credenciales(email, password): #VALIDACION DEL ESTUDIANTE
+            if isinstance(alumno, Estudiante) and alumno.validar_credenciales(email, password):
                 alumno_encontrado = alumno
                 break
         if alumno_encontrado:
             os.system('cls')
             print(f"BIENVENIDO AL CAMPUS, {alumno_encontrado.name} {alumno_encontrado.surname}.")
 
-            while True: #INGRESA AL MENU DE ALUMNO
+            while True:
                 menu_alumno()
                 opt_alumno = input("Ingrese una opción de estudiante: ")
                 cursos_ordenados = sorted(cursos, key=lambda x: x.nombre)
@@ -78,55 +88,75 @@ while True:
                     print("Cursos disponibles:")
                     for i, curso in enumerate(cursos_ordenados, start=1):
                         print(f"{i}. {curso.nombre}")
+                    
                     curso_seleccionado = None
                     while curso_seleccionado is None:
                         try:
                             opcion = int(input("Seleccione el número del curso: "))
                             if 1 <= opcion <= len(cursos_ordenados):
                                 curso_seleccionado = cursos_ordenados[opcion - 1]
-
-                                if curso_seleccionado not in alumno_encontrado.mis_cursos:
+                                
+                                if curso_seleccionado in alumno_encontrado.mis_cursos:
+                                    print("Ya estás matriculado en este curso.")
+                                else:
                                     alumno_encontrado.mis_cursos.append(curso_seleccionado)
                                     print(f"Te has matriculado en el curso {curso_seleccionado.nombre}.")
-                                    input("\nPresione una tecla para volver al menu: ")
+                                    input("\nPresione una tecla para volver al menú: ")
                                     os.system('cls')
-                                else:
-                                    print("Ya estás matriculado en este curso.")
-
                             else:
                                 print("Opción no válida. Intente de nuevo.")
                         except ValueError:
                             print("Ingrese un número válido.")
 
+
+
                 elif opt_alumno == "2":
+                    print("Cursos matriculados:")
+                    for i, curso in enumerate(alumno_encontrado.mis_cursos, start=1):
+                        print(f"{i}. {curso.nombre}")
+                    curso_seleccionado = None
+                    while curso_seleccionado is None:
+                        try:
+                            opcion = int(input("Seleccione el número del curso a desmatricular: "))
+                            if 1 <= opcion <= len(alumno_encontrado.mis_cursos):
+                                curso_seleccionado = alumno_encontrado.mis_cursos[opcion - 1]
+                                alumno_encontrado.desmatricular_curso(curso_seleccionado)
+                                print(f"Te has desmatriculado del curso {curso_seleccionado.nombre}.")
+                            else:
+                                print("Opción no válida. Intente de nuevo.")
+                        except ValueError:
+                            print("Ingrese un número válido.")
+
+                elif opt_alumno == "3":
                     cursos_inscriptos = alumno_encontrado.mis_cursos
                     if not cursos_inscriptos:
-                            print("No se inscribio en ningun curso")
-                            input("\nPresione una tecla para volver al menu: ")
-                            os.system('cls')                    
+                        print("No estás inscrito en ningún curso.")
                     else:
                         for i, curso in enumerate(cursos_inscriptos, start=1):
                             print(f"{i}. {curso.nombre}")
-                        curso_seleccionado = None
-                        while curso_seleccionado is None:
-                            try:
-                                opcion = int(input("Seleccione el número del curso que desea averiguar la informacion: "))
-                                if 1 <= opcion <= len(cursos_inscriptos):
-                                    curso_seleccionado = cursos_inscriptos[opcion - 1]
-                                    print(f"Nombre del curso: {curso_seleccionado.nombre}")
-                                    input("\nPresione una tecla para volver al menu: ")
-                                    os.system('cls')
-                            except ValueError:
-                                print("Ingrese un número válido para poder continuar")                                 
+
+                        opcion_curso = input("Seleccione el número del curso para ver los archivos: ")
+                        try:
+                            opcion_curso = int(opcion_curso)
+                            if 1 <= opcion_curso <= len(cursos_inscriptos):
+                                curso_seleccionado = cursos_inscriptos[opcion_curso - 1]
+                                print(f"Archivos para el curso '{curso_seleccionado.nombre}':")
+                                for archivo in curso_seleccionado.archivos:
+                                    print(archivo)
+                            else:
+                                print("Opción no válida. Intente de nuevo.")
+                        except ValueError:
+                            print("Ingrese un número válido para seleccionar un curso.")
 
 
-                elif opt_alumno == "3":
-                     break  # volver al menú principal
-        else:
-            print("Error: Correo electrónico o contraseña incorrectos.")
+                elif opt_alumno == "4":
+                    break  # volver al menú principal
+
+                else:
+                    print("Error: Correo electrónico o contraseña incorrectos.")
+
 
     elif opt == "2":
-            #os.system('cls')
             print("|--------------------------------------|")
             print("|----------CAMPUS DEL PROFESOR---------|")
             print("|--------------------------------------|") 
@@ -157,8 +187,8 @@ while True:
                                 if 1 <= opcion <= len(cursos_ordenados):
                                     curso_seleccionado = cursos_ordenados[opcion - 1]
 
-                                    if curso_seleccionado not in profesor_encontrado.dicto_curso:  # Verificar si ya está matriculado
-                                            profesor_encontrado.dicto_curso.append(curso_seleccionado)  # Agregar el curso a mi_cursos
+                                    if curso_seleccionado not in profesor_encontrado.dicto_curso:  
+                                            profesor_encontrado.dicto_curso.append(curso_seleccionado)  
                                             print(f"Te has subscripto para dictar el curso {curso_seleccionado.nombre}.")
                                             print(f"La contraseña de este curso es: {curso_seleccionado.password}")
                                             print("Anotela para compartirla con sus alumnos el primer dia de clases!!")
@@ -192,12 +222,10 @@ while True:
                             except ValueError:
                                 print("Ingrese un número válido para poder continuar")                       
                     elif opt_profesor == "3":
-                        break  # volver al menú principal
+                        break 
             else:
                 print("Error: Correo electrónico o contraseña incorrectos.")
     elif opt == "3":
-            #os.system('cls')
-
             cursos_ordenados = sorted(cursos, key=lambda x: x.nombre)
             cursos_ordenados = obtener_cursos_ordenados()
             print("A continuacion se detallan los cursos que dicta la UTN: \n")            
