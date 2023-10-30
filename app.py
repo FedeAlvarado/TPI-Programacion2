@@ -1,18 +1,20 @@
-from usuario import Usuario
-from estudiante import Estudiante
-from curso import Curso
-from profesor import Profesor
+from usuario import *
+from estudiante import *
+from curso import *
+from profesor import *
 import os
-from archivo import Archivo
-from datetime import date
+from archivo import *
+from datetime import *
 
-alumnos = [] #LISTAS A UTILIZAR
-profesores = [] #LISTAS A UTILIZAR
-
-alumno1 = Estudiante("Federico", "Alvarado", "email1", "123", "12345", "2023-10-18")
-alumno2 = Estudiante("Agustin", "Coronel", "email2", "123", "12345", "2023-10-18")
-profesor1 = Profesor("Mercedes", "Valoni", "email3", "123", "Analista Sistemas", "2022")
-profesor2 = Profesor("Tomas", "Ponce", "email4", "123", "Analista Sistemas", "2022")
+alumnos = [
+    Estudiante("Federico", "Alvarado", "email1", "123", "12345"),
+    Estudiante("Agustin", "Coronel", "email2", "123", "12345")
+    ] #LISTAS A UTILIZAR
+profesores = [
+    Profesor("Mercedes", "Valoni", "email3", "123", "Analista Sistemas", "2022"),
+    Profesor("Tomas", "Ponce", "email4", "123", "Analista Sistemas", "2022"),
+    Profesor("admin","admin","admin","admin","admin","admin")
+] #LISTAS A UTILIZAR
 
 cursos = [
     Curso("Programación I"),
@@ -25,18 +27,15 @@ cursos = [
 ] #LISTAS A UTILIZAR
 
 
-archivo1 = Archivo("tpi.pdf", date(2023, 10, 15), "PDF", cursos[0])
-archivo2 = Archivo("practica1.pdf", date(2023, 10, 20), "PDF", cursos[0])
+archivo1 = Archivo("tpi_2.pdf", "PDF")
+archivo2 = Archivo("practica1.pdf","PDF")
 
-archivo3 = Archivo("tpii.pdf", date(2023, 10, 16), "PDF", cursos[1])
-archivo4 = Archivo("practica2.pdf", date(2023, 10, 21), "PDF", cursos[1])
+archivo3 = Archivo("tpi_1.pdf","PDF")
+archivo4 = Archivo("practica2.pdf","PDF")
 
 cursos[0].archivos = [archivo1, archivo2]
 cursos[1].archivos = [archivo3, archivo4]
 
-alumnos.append(alumno1)
-alumnos.append(alumno2)
-profesores.append(profesor1)
 
 def menu_principal():
     print("|--------------------------------------|")
@@ -152,8 +151,8 @@ while True:
                 elif opt_alumno == "4":
                     break  # volver al menú principal
 
-                else:
-                    print("Error: Correo electrónico o contraseña incorrectos.")
+        else:
+            print("Error: Correo electrónico o contraseña incorrectos.")
 
 
     elif opt == "2":
@@ -167,7 +166,18 @@ while True:
                 if isinstance(profesor, Profesor )  and profesor.validar_credenciales(email, password):
                     profesor_encontrado = profesor
                     break
-            if profesor_encontrado:
+            if profesor_encontrado:     #arreglar el menu profesor
+                print("Ingrese los datos del profesor")
+                nombre=input("Nombre:")
+                apellido=input("Apellido: ")
+                email=input("Email: ")
+                password=input("Contraseña: ")
+                titulo=input("Titulo: ")
+                anio=input("Año egreso: ")
+                nuevo_profesor = Profesor(nombre,apellido,email,password,titulo,anio)
+                profesores.append(nuevo_profesor)
+            elif profesor.email != "admin":
+                
                 os.system('cls')
                 print(f"BIENVENIDO AL CAMPUS, {profesor_encontrado.name} {profesor_encontrado.surname}.")
                 
@@ -192,8 +202,10 @@ while True:
                                             print(f"Te has subscripto para dictar el curso {curso_seleccionado.nombre}.")
                                             print(f"La contraseña de este curso es: {curso_seleccionado.password}")
                                             print("Anotela para compartirla con sus alumnos el primer dia de clases!!")
-                                            input("\nPresione una tecla para volver al menu: ")
-                                            os.system('cls')
+                                            opc = input("\nDesea agregar algun archivo al curso?\n1- SI 2- NO ")
+                                            if opc == 1:
+                                                nuevo_archivo = input("Ingrese el nombre del archivo y su formato ---- POR EJEMPLO: tp.pdf : ") #AGREGAR MANUALMENTE EL ARCHIVO AL CURSO 
+                                                curso_seleccionado.archivos.append(nuevo_archivo)
                                     else:
                                         print("ATENCION!!\nYa estás dictando este curso.")
                                 else:
@@ -230,7 +242,7 @@ while True:
             cursos_ordenados = obtener_cursos_ordenados()
             print("A continuacion se detallan los cursos que dicta la UTN: \n")            
             for curso in cursos_ordenados:
-                print(f"{curso.nombre}  ----- {curso.carrera}")
+                print(f"{curso.nombre}  ----- Tec. Programacion")
             input("\nPresione una tecla para continuar: ")
             os.system('cls')
                 

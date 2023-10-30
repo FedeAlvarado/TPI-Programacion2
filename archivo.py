@@ -1,12 +1,11 @@
-from curso import Curso
 from datetime import date
 
 class Archivo:
-    def __init__(self, nombre: str, fecha: date, formato: str, curso: Curso):
+    def __init__(self, nombre: str,formato: str):
         self.__nombre = nombre
-        self.__fecha = fecha
+        self.__fecha = date.today()
         self.__formato = formato
-        self.__curso = curso
+        
 
     @property
     def nombre(self) -> str:
@@ -20,22 +19,19 @@ class Archivo:
     def formato(self) -> str:
         return self.__formato
 
-    @property
-    def curso(self) -> Curso:
-        return self.__curso
 
     def __str__(self) -> str:
-        return f"Nombre: {self.nombre}, Fecha: {self.fecha}, Formato: {self.formato}, Curso: {self.curso.nombre}"
+        return f"Nombre: {self.nombre}, Fecha: {self.fecha}, Formato: {self.formato}"
 
 
-curso_programacion_i = Curso("Programación I")
-curso_programacion_ii = Curso("Programación II")
+# curso_programacion_i = Curso("Programación I")
+# curso_programacion_ii = Curso("Programación II")
 
-archivo1 = Archivo("tpi.pdf", date(2023, 10, 15), "PDF", curso_programacion_i)
-archivo2 = Archivo("practica1.pdf", date(2023, 10, 20), "PDF", curso_programacion_i)
+# archivo1 = Archivo("tpi.pdf", "PDF", curso_programacion_i)
+# archivo2 = Archivo("practica1.pdf","PDF", curso_programacion_i)
 
-archivo3 = Archivo("tpii.pdf", date(2023, 10, 16), "PDF", curso_programacion_ii)
-archivo4 = Archivo("practica2.pdf", date(2023, 10, 21), "PDF", curso_programacion_ii)
+# archivo3 = Archivo("tpii.pdf","PDF", curso_programacion_ii)
+# archivo4 = Archivo("practica2.pdf","PDF", curso_programacion_ii)
 
-curso_programacion_i.archivos = [archivo1, archivo2]
-curso_programacion_ii.archivos = [archivo3, archivo4]
+# curso_programacion_i.archivos = [archivo1, archivo2]
+# curso_programacion_ii.archivos = [archivo3, archivo4]

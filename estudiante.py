@@ -1,11 +1,12 @@
 from usuario import Usuario
 from curso import Curso
+from datetime import *
 
 class Estudiante(Usuario):
-    def __init__(self, nombre, apellido, email, password, legajo, date_ins):
+    def __init__(self, nombre, apellido, email, password, legajo):
         super().__init__(nombre, apellido, email, password)
         self.__legajo = legajo
-        self.__date_ins = date_ins
+        self.__date_ins = date.today()
         self.__mis_cursos = []
 
     @property
