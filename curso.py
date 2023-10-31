@@ -23,6 +23,9 @@ class Curso():
     @property
     def archivos(self):
         return self.__archivos
+    @property
+    def cantidad_archivos(self) -> int:
+        return len(self.archivos)
     
     @nombre.setter
     def nombre(self, nombre_mat: str):
@@ -35,7 +38,7 @@ class Curso():
         self.__archivos.append(archivo)
 
     def __str__(self) -> str:
-        return f"Curso: {self.__nombre} - Carrera: {self.carrera} - Clave de Matriculación: {self.password}"
+        return f"Curso: {self.__nombre} - Carrera: {self.carrera} - Clave de Matriculación: {self.password} - Cantidad de archivos:{self.cantidad_archivos}"
 
     @classmethod
     def __generar_password(cls):

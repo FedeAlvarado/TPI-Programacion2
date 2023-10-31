@@ -60,6 +60,25 @@ def menu_alumno():
 def obtener_cursos_ordenados():
     return sorted(cursos, key=lambda x: x.nombre)
 
+def nuevo_profesor():
+        print("Ingrese los datos del profesor")
+        nombre=input("Nombre:")
+        apellido=input("Apellido: ")
+        email=input("Email: ")
+        password=input("Contraseña: ")
+        titulo=input("Titulo: ")
+        anio=input("Año egreso: ")
+        nuevo_profesor = Profesor(nombre,apellido,email,password,titulo,anio)
+        return profesores.append(nuevo_profesor)
+def nuevo_archivo():
+    print("Ingrese los datos del nuevo archivo")
+    nombre=input("Nombre:")
+    formato=input("Formato: ")
+    nuevo_archivo = Archivo(nombre,formato)
+    print(f"Archivo: {nuevo_archivo} \n Se agrego con exito\n")
+    return curso_seleccionado.archivos.append(nuevo_archivo)
+
+
 while True:
     menu_principal()
     opt = input("Ingrese una opción: ")
@@ -163,21 +182,10 @@ while True:
             password = input("Ingrese su contraseña: ")
             profesor_encontrado = None
             for profesor in profesores:
-                if isinstance(profesor, Profesor )  and profesor.validar_credenciales(email, password):
+                if profesor.validar_credenciales(email,password):
                     profesor_encontrado = profesor
-                    break
-            if profesor_encontrado:     #arreglar el menu profesor
-                print("Ingrese los datos del profesor")
-                nombre=input("Nombre:")
-                apellido=input("Apellido: ")
-                email=input("Email: ")
-                password=input("Contraseña: ")
-                titulo=input("Titulo: ")
-                anio=input("Año egreso: ")
-                nuevo_profesor = Profesor(nombre,apellido,email,password,titulo,anio)
-                profesores.append(nuevo_profesor)
-            elif profesor.email != "admin":
-                
+            if profesor_encontrado:
+              
                 os.system('cls')
                 print(f"BIENVENIDO AL CAMPUS, {profesor_encontrado.name} {profesor_encontrado.surname}.")
                 
@@ -202,10 +210,9 @@ while True:
                                             print(f"Te has subscripto para dictar el curso {curso_seleccionado.nombre}.")
                                             print(f"La contraseña de este curso es: {curso_seleccionado.password}")
                                             print("Anotela para compartirla con sus alumnos el primer dia de clases!!")
-                                            opc = input("\nDesea agregar algun archivo al curso?\n1- SI 2- NO ")
+                                            opc = int(input("\nDesea agregar algun archivo al curso?\n1- SI 2- NO:\n "))
                                             if opc == 1:
-                                                nuevo_archivo = input("Ingrese el nombre del archivo y su formato ---- POR EJEMPLO: tp.pdf : ") #AGREGAR MANUALMENTE EL ARCHIVO AL CURSO 
-                                                curso_seleccionado.archivos.append(nuevo_archivo)
+                                                nuevo_archivo()
                                     else:
                                         print("ATENCION!!\nYa estás dictando este curso.")
                                 else:
@@ -218,6 +225,7 @@ while True:
                         cursos_dictados = profesor_encontrado.dicto_curso
                         if not cursos_dictados:
                              print("Todavia no se anoto en el dictado de ningun curso")
+                             continue
                         else:     
                             for i, curso in enumerate(cursos_dictados, start=1):
                                 print(f"{i}. {curso.nombre}")
@@ -229,6 +237,9 @@ while True:
                                     curso_seleccionado = cursos_dictados[opcion - 1]
                                     print(f"Nombre del curso: {curso_seleccionado.nombre}")
                                     print(f"Contraseña del curso: {curso_seleccionado.password}")
+                                    for archivo in curso_seleccionado.archivos:
+                                        print(f"Archivos del curso: {archivo}")
+                                    print(f'Cantidad de archivos: {curso_seleccionado.cantidad_archivos}')
                                     input("\nPresione una tecla para volver al menu: ")
                                     os.system('cls')
                             except ValueError:
@@ -237,6 +248,12 @@ while True:
                         break 
             else:
                 print("Error: Correo electrónico o contraseña incorrectos.")
+                opc = input("Si desea registrarse como nuevo profesor ingrese 'ADMIN'\n De lo contrario ingrese enter para continuar: ")
+                if opc == "admin":
+                    nuevo_profesor()
+                else:
+                    continue
+                    
     elif opt == "3":
             cursos_ordenados = sorted(cursos, key=lambda x: x.nombre)
             cursos_ordenados = obtener_cursos_ordenados()
